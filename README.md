@@ -89,13 +89,19 @@ Zenodo archive you can skip the first line and run them as they are.
 
 ### Round 2, interaction fingerprints
 
-Computing the fingerprints is the slow part, so you may want to try a single target first:
+Both scripts work on one target at a time. Computing the fingerprints is the slow part, so it is
+done once and stored in a pickle that the analysis then loads:
 
 ```bash
 cd interaction_fingerprints
-python compute_fingerprints.py IL1b     # one target; leave it out to do all three
-python analyse_fingerprints.py          # DBSCAN clustering and interaction-frequency heatmaps
+python compute_fingerprints.py --target IL1b \
+    --pdb ../data/interaction_fingerprints/IL1b/receptor.pdb \
+    --sdf ../data/interaction_fingerprints/IL1b/poses.sdf
+python analyse_fingerprints.py --target IL1b --ifp results/IL1b_ifp.pkl
 ```
+
+[interaction_fingerprints/README.md](interaction_fingerprints/README.md) explains the two input
+files and the clustering parameters.
 
 ### Round 3, analogue expansion
 
