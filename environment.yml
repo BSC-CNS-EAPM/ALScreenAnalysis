@@ -1,0 +1,19 @@
+name: alscreen-analysis
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - numpy
+  - pandas
+  - scipy
+  - statsmodels
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - joblib
+  - pyarrow
+  - rdkit
+  - umap-learn
+  - pip
+  - pip:
+      - prolif==2.0.3
