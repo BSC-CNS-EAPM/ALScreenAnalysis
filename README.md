@@ -25,7 +25,7 @@ Every target was screened under 2/3 docking setups, which we call bias condition
 | [interaction_fingerprints/](interaction_fingerprints/) | **Round 2**, interaction fingerprint-driven selection | ProLIF protein-ligand interaction fingerprints of the docked poses, their clustering, and the per-cluster interaction frequencies |
 | [analogue_analysis/](analogue_analysis/) | **Round 3**, analogue expansion | Analysis of the analogues selected around the confirmed hits |
 | [representative_subset_library_scaling/](representative_subset_library_scaling/) | **Round 4**, representative subset and library scaling | 50K vs 500K seeding of the active-learning cycle, and the scaling from Enamine REAL 5B to 65B |
-| [database_properties/](database_properties/) | Supplementary | Molecular weight, linearity ratio and unique Bemis-Murcko scaffolds of the full Enamine REAL 5B and 65B libraries |
+| [large_libraries_properties/](large_libraries_properties/) | Supplementary | Molecular weight, linearity ratio and unique Bemis-Murcko scaffolds of the full Enamine REAL 5B and 65B libraries |
 | [reference_compounds/](reference_compounds/) | Supplementary | Properties (KD, ligand efficiency, MW, linearity ratio) of the known interleukin binders and of the compounds we tested experimentally |
 | [chemical_diversity/](chemical_diversity/) | Supplementary | Chemotype and scaffold diversity along the rounds: diversity metrics, Sankey diagrams, and a UMAP of the chemical space explored |
 | [data/](data/) | | Input data, downloaded from Zenodo (see below) |
@@ -59,7 +59,7 @@ Download the archive and extract it into [data/](data/). The folder structure it
 with, the columns of every file, and the definition of the bias conditions are all described in
 [data/README.md](data/README.md).
 
-The library-wide analyses in `database_properties/` also need the Enamine REAL libraries
+The library-wide analyses in `large_libraries_properties/` also need the Enamine REAL libraries
 themselves (5B and 65B) as Parquet files. Those are distributed by
 [Enamine](https://enamine.net/compound-collections/real-compounds) and are not redistributed here.
 
@@ -129,18 +129,20 @@ python plot_sankey_grid.py
 python plot_umap_grid.py
 ```
 
-### Supplementary, library-wide properties
+### Supplementary, large libraries properties
 
 These go over the full Enamine REAL libraries, so they are meant for an HPC cluster rather than
 a laptop. The `run_*.sh` scripts are SLURM jobs, and you will need to edit the account, QoS and
 module lines for your own cluster. Finished partitions are skipped, so if a job is killed you
 can resubmit the same command and it picks up where it left off.
+[large_libraries_properties/README.md](large_libraries_properties/README.md) goes through all
+of this in detail, including how the library has to be prepared.
 
 As an example, here is the molecular weight distribution of both libraries, with the 65B one
 split over 48 nodes and the 5B one over 7:
 
 ```bash
-cd database_properties
+cd large_libraries_properties
 mkdir -p logs
 sbatch --array=0-47 run_calculate_mw_database.sh /path/to/Enamine_REAL_65B_parquet results/mw/enamine_65B
 sbatch --array=0-6  run_calculate_mw_database.sh /path/to/Enamine_REAL_5B_parquet  results/mw/enamine_5B
