@@ -21,7 +21,7 @@ Every target was screened under 2/3 docking setups, which we call bias condition
 
 | Folder | Paper section | What it does |
 |---|---|---|
-| [ALScreen/](ALScreen/) | **Round 1**, medicinal chemistry-driven selection, and Supplementary | Glide pose handling, score distributions across the active-learning rounds, DSD prediction error, and the statistical comparison between rounds |
+| [ALScreen_processing/](ALScreen_processing/) | **Round 1**, medicinal chemistry-driven selection, and Supplementary | Glide pose handling, score distributions across the active-learning rounds, ALScreen prediction error, and the statistical comparison between rounds |
 | [interaction_fingerprints/](interaction_fingerprints/) | **Round 2**, interaction fingerprint-driven selection | ProLIF protein-ligand interaction fingerprints of the docked poses, their clustering, and the per-cluster interaction frequencies |
 | [analogue_analysis/](analogue_analysis/) | **Round 3**, analogue expansion | Analysis of the analogues selected around the confirmed hits |
 | [representative_subset_library_scaling/](representative_subset_library_scaling/) | **Round 4**, representative subset and library scaling | 50K vs 500K seeding of the active-learning cycle, and the scaling from Enamine REAL 5B to 65B |
@@ -32,7 +32,8 @@ Every target was screened under 2/3 docking setups, which we call bias condition
 | [figures/](figures/) | | Workflow figure |
 
 Each script writes its output to a `results/` folder next to it. Those folders are not tracked
-by git, except for the figures and tables that made it into the paper.
+by git, so the repository holds the code and you regenerate the figures and tables by running it
+on the data from Zenodo.
 
 ## Installation
 
@@ -41,12 +42,12 @@ conda env create -f environment.yml
 conda activate alscreen-analysis
 ```
 
-That environment covers everything except [ALScreen/filter_maegz.py](ALScreen/filter_maegz.py),
+That environment covers everything except [ALScreen_processing/filter_maegz.py](ALScreen_processing/filter_maegz.py),
 which reads Glide pose viewer files through the Schrödinger Python API and therefore needs a
 **Schrödinger license and installation**. Run it with the Schrödinger interpreter instead:
 
 ```bash
-$SCHRODINGER/run ALScreen/filter_maegz.py --maegz glide_pv.maegz -o filtered --max_score -8 --neutral
+$SCHRODINGER/run ALScreen_processing/filter_maegz.py --maegz glide_pv.maegz -o filtered --max_score -8 --neutral
 ```
 
 ## Data
@@ -77,14 +78,14 @@ Say you are starting from a raw Glide output and want the score distributions an
 statistics that go with them:
 
 ```bash
-cd ALScreen
+cd ALScreen_processing
 python get_best_glide_pose.py --csv glide_output.csv   # only if you start from raw Glide output
 python plot_score_histograms.py                        # gscore distributions per target and bias
-python prediction_errors.py                            # MAE, RMSE and correlation of the DSD predictions
+python prediction_errors.py                            # MAE, RMSE and correlation of the ALScreen predictions
 python statistical_analysis.py                         # Mann-Whitney, KS and Cliff's delta between rounds
 ```
 
-The three analysis scripts read the data straight from `data/DSD/`, so if you downloaded the
+The three analysis scripts read the data straight from `data/ALScreen/`, so if you downloaded the
 Zenodo archive you can skip the first line and run them as they are.
 
 ### Round 2, interaction fingerprints

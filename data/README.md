@@ -7,26 +7,26 @@ Download the archive and extract it here, so that this folder looks like:
 
 ```
 data/
-├── DSD/                                # docking results of the AL screen
+├── ALScreen/                            # docking results of the AL screen
 │   ├── IL1b/
 │   │   ├── unbias/
-│   │   │   ├── initial.csv             # random initial 50K set (Glide)
-│   │   │   ├── pred1.csv               # compounds selected by AL prediction 1 (Glide)
-│   │   │   ├── pred1_dsd.csv           # DSD predicted score vs Glide gscore, prediction 1
-│   │   │   ├── pred2.csv               # compounds selected by AL prediction 2 (Glide)
-│   │   │   ├── pred2_dsd.csv           # DSD predicted score vs Glide gscore, prediction 2
-│   │   │   └── reference.csv           # reference compounds docked with the same setup
+│   │   │   ├── initial.csv              # random initial 50K set (Glide)
+│   │   │   ├── pred1.csv                # compounds selected by AL prediction 1 (Glide)
+│   │   │   ├── pred1_alscreen.csv       # ALScreen predicted score vs Glide gscore, prediction 1
+│   │   │   ├── pred2.csv                # compounds selected by AL prediction 2 (Glide)
+│   │   │   ├── pred2_alscreen.csv       # ALScreen predicted score vs Glide gscore, prediction 2
+│   │   │   └── reference.csv            # reference compounds docked with the same setup
 │   │   └── bias1/ ...
 │   ├── IL2/{unbias,bias1,bias2}/ ...
 │   └── IL36g/{unbias,bias1,bias2}/ ...
 ├── interaction_fingerprints/
 │   └── {IL1b,IL2,IL36g}/
-│       ├── receptor.pdb                # prepared receptor structure
-│       └── poses.sdf                   # best Glide pose of the selected compounds
+│       ├── receptor.pdb                 # prepared receptor structure
+│       └── poses.sdf                    # best Glide pose of the selected compounds
 ├── reference_compounds/
-│   └── {IL1b,IL2,IL36g}_reference.csv  # known binders from the literature
+│   └── {IL1b,IL2,IL36g}_reference.csv   # known binders from the literature
 └── experimental_hits/
-    └── <target>_round<N>.csv           # compounds tested by SPR in each experimental round
+    └── <target>_round<N>.csv            # compounds tested by SPR in each experimental round
 ```
 
 ## File formats
@@ -34,7 +34,7 @@ data/
 | Files | Columns |
 |---|---|
 | `initial.csv`, `pred1.csv`, `pred2.csv`, `reference.csv` | `ID`, `SMILES`, `glide_gscore` (best pose per compound) |
-| `pred1_dsd.csv`, `pred2_dsd.csv` | `ID`, `SMILES`, `dockscore` (DSD prediction), `glide_gscore` |
+| `pred1_alscreen.csv`, `pred2_alscreen.csv` | `ID`, `SMILES`, `dockscore` (ALScreen prediction), `glide_gscore` |
 | `<target>_reference.csv` | `ID`, `DB` (source), `SMILES`, `Affinity` (nM), `Affinity_Type` (IC50/KD) |
 | `<target>_round<N>.csv` | `ID`, `SMILES`, `KD_uM` (SPR KD in µM, empty if not measured) |
 
