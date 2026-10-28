@@ -3,95 +3,91 @@
 This repository holds the analysis code behind the paper:
 
 > **Stress-testing Billion-Compound Libraries Beyond Druggable Space: Active Learning for Interleukin PPI Disruptors**
-> *DOI: to be added. The paper will be published soon and the link will be added here.*
+>
+> *DOI: to be added once the paper is published.*
 
-The study introduces **ALScreen**, an active-learning (AL) framework based on the ScoreFormer deep surrogate docking. The workflow enables scalable virtual screening of ultra-large chemical libraries against three interleukin protein-protein interaction targets: **IL-1β**
-(PDB 8C3U), **IL-2** (1PY2) and **IL-36γ** (6P9E). It was used to screen 5 billion compounds from the Enamine REAL library, with scalability evaluated up to 65 billion compounds. Each active-learning cycle trains on real Glide docking scores, predicts over the whole library, docks the top-ranked compounds, and feeds them back into the training pool.
-Compounds were subsequently selected for experimental validation by surface plasmon resonance (SPR) across four rounds, each using a different selection criterion.
+The study introduces **ALScreen**, an active-learning framework based on the ScoreFormer deep surrogate docking model. It screens ultra-large chemical libraries against three interleukin protein–protein interaction targets: **IL-1β** (PDB 8C3U), **IL-2** (1PY2) and **IL-36γ** (6P9E).
 
-The scripts collected here are the ones that produce the figures and
-tables reported for those rounds.
+ALScreen was applied to 5 billion compounds from Enamine REAL, with scalability evaluated up to 65 billion compounds. Each active-learning cycle trains on Glide docking scores, predicts scores across the library, docks the top-ranked compounds and adds them to the training pool. Compounds were selected for experimental validation by surface plasmon resonance (SPR) across four rounds using different selection criteria.
+
+The scripts here prepare the datasets and generate the analyses, figures and tables reported in the study.
 
 ![ALScreen workflow and selection criteria](figures/figure1.png)
 
-Every target was screened under 2/3 docking setups, which we call bias conditions: `unbias`
-(no constraints), `bias1` and `bias2` (hydrophobic and/or H-bond constraints). They are described in [data/README.md](data/README.md).
+Each target was screened under two or three docking conditions: `unbias` (no constraints), `bias1` and `bias2` (hydrophobic and/or hydrogen-bond constraints). Their definitions are in [data/README.md](data/README.md).
 
 ## Contents in each folder
 
 | Folder | Paper section | What it does |
 |---|---|---|
-| [ALScreen_processing/](ALScreen_processing/) | **Round 1**, medicinal chemistry-driven selection, and Supplementary | Glide pose handling, score distributions across the active-learning rounds, ALScreen prediction error, and the statistical comparison between rounds |
-| [interaction_fingerprints/](interaction_fingerprints/) | **Round 2**, interaction fingerprint-driven selection | ProLIF protein-ligand interaction fingerprints of the docked poses, their clustering, and the per-cluster interaction frequencies |
-| [analogue_analysis/](analogue_analysis/) | **Round 3**, analogue expansion | Analysis of the analogues selected around the confirmed hits |
-| [representative_subset_library_scaling/](representative_subset_library_scaling/) | **Round 4**, representative subset and library scaling | 50K vs 500K seeding of the active-learning cycle, and the scaling from Enamine REAL 5B to 65B |
-| [large_libraries_properties/](large_libraries_properties/) | Supplementary | Molecular weight, linearity ratio and unique Bemis-Murcko scaffolds of the full Enamine REAL 5B and 65B libraries |
-| [reference_compounds/](reference_compounds/) | Supplementary | Properties (KD, ligand efficiency, MW, linearity ratio) of the known interleukin binders and of the compounds we tested experimentally |
-| [chemical_diversity/](chemical_diversity/) | Supplementary | Chemotype and scaffold diversity along the rounds: diversity metrics, Sankey diagrams, and a UMAP of the chemical space explored |
-| [data/](data/) | | Input data, downloaded from Zenodo (see below) |
+| [ALScreen_processing/](ALScreen_processing/) | **Rounds 1 and 4**, and Supplementary | Glide pose processing, score distributions, prediction errors and statistical comparisons |
+| [interaction_fingerprints/](interaction_fingerprints/) | **Round 2**, interaction fingerprint-driven selection | Protein–ligand interaction fingerprints, clustering and interaction frequencies |
+| [analogue_analysis/](analogue_analysis/) | **Round 3**, analogue expansion | Analogue library preparation, molecular properties, chemical space, Glide/PELE comparisons and final selection |
+| [representative_subset_library_scaling/](representative_subset_library_scaling/) | **Round 4**, representative subset and library scaling | Construction and analysis of a diverse Enamine REAL 5B subset for active-learning seeding |
+| [large_libraries_properties/](large_libraries_properties/) | Supplementary | Molecular weight, linearity ratio and unique Bemis–Murcko scaffolds of the 5B and 65B libraries |
+| [reference_compounds/](reference_compounds/) | Supplementary | Molecular and affinity-derived properties of known binders and experimentally tested compounds |
+| [chemical_diversity/](chemical_diversity/) | Supplementary | Chemotype and scaffold diversity, Sankey diagrams and chemical-space UMAPs |
+| [data/](data/) | | Input data and format descriptions |
 | [figures/](figures/) | | Workflow figure |
 
-Each script writes its output to a `results/` folder next to it. Those folders are not tracked
-by git, so the repository holds the code and you regenerate the figures and tables by running it
-on the data from Zenodo.
+Most analysis figures and tables are written to `results/` folders. Some preparation scripts write beside their inputs or accept an output path. See each folder’s README for details.
 
 ## Installation
+
+Create and activate the base environment:
 
 ```bash
 conda env create -f environment.yml
 conda activate alscreen-analysis
 ```
 
-That environment covers everything except [ALScreen_processing/filter_maegz.py](ALScreen_processing/filter_maegz.py),
-which reads Glide pose viewer files through the Schrödinger Python API and therefore needs a
-**Schrödinger license and installation**. Run it with the Schrödinger interpreter instead:
+Additional components are required for particular workflows:
+
+- **Schrödinger installation and license** for `ALScreen_processing/filter_maegz.py`.
+- **MolecularAnalysis** for the analogue CSV/SDF/MolDB helpers.
+- **TAPNN** and an importable **`utils.comp.calculate_isim`** implementation for the representative-subset workflow.
+
+Check the corresponding folder README for dependencies and configuration. For example, run Maestro pose filtering through the Schrödinger interpreter:
 
 ```bash
-$SCHRODINGER/run ALScreen_processing/filter_maegz.py --maegz glide_pv.maegz -o filtered --max_score -8 --neutral
+"$SCHRODINGER/run" ALScreen_processing/filter_maegz.py \
+    --maegz glide_pv.maegz -o filtered \
+    --metric gscore --metric_threshold -8 --neutral
 ```
 
 ## Data
 
-The input data is too large for git, so it lives in Zenodo:
+The analysis data is too large for git and is deposited in Zenodo:
 
-> **Zenodo DOI: 10.5281/zenodo.XXXXXXX** *(placeholder, the final record will be added here)*
+> **Zenodo DOI: to be added.**
 
-Download the archive and extract it into [data/](data/). The folder structure it should end up
-with, the columns of every file, and the definition of the bias conditions are all described in
-[data/README.md](data/README.md).
+Download the archive and extract it into [data/](data/). The expected structure, column names and docking conditions are described in [data/README.md](data/README.md). Additional inputs for analogue and representative-subset analyses are documented in their respective folders.
 
-The library-wide analyses in `large_libraries_properties/` also need the Enamine REAL libraries
-themselves (5B and 65B) as Parquet files. Those are distributed by
-[Enamine](https://enamine.net/compound-collections/real-compounds) and are not redistributed here.
+Library-wide analyses require the Enamine REAL 5B and 65B libraries as partitioned Parquet files. These are distributed by [Enamine](https://enamine.net/compound-collections/real-compounds) and are not redistributed here. Representative-subset construction additionally requires HAC-organised library files and matching population counts.
 
 ## Examples of how to run the analyses
 
-A few examples to give you an idea of how the scripts are used. They are all run from inside
-their own folder, and the ones that compute something have to go before the ones that plot it.
-Each script explains what it does and what it needs in the docstring at the top of the file,
-and the ones that take arguments also respond to `python <script>.py --help`, so those are the
-best places to look when you want something other than what is shown here.
+Run these examples from the repository root, entering the relevant folder first. Compute intermediate data before running plots that depend on it. Folder READMEs describe inputs, outputs and parameters; scripts accepting arguments also provide `--help`.
 
 ### Round 1 and the supplementary docking analysis
 
-Say you are starting from a raw Glide output and want the score distributions and the
-statistics that go with them:
+Process raw Glide output if necessary, then generate score distributions, prediction errors and statistical comparisons:
 
 ```bash
 cd ALScreen_processing
-python get_best_glide_pose.py --csv glide_output.csv   # only if you start from raw Glide output
-python plot_score_histograms.py                        # gscore distributions per target and bias
-python prediction_errors.py                            # MAE, RMSE and correlation of the ALScreen predictions
-python statistical_analysis.py                         # Mann-Whitney, KS and Cliff's delta between rounds
+python process_glide_csv_output.py --csv glide_output.csv  # optional preparation
+python plot_grid_gscore_histograms.py
+python prediction_errors.py
+python statistical_analysis.py
 ```
 
-The three analysis scripts read the data straight from `data/ALScreen/`, so if you downloaded the
-Zenodo archive you can skip the first line and run them as they are.
+The three analysis scripts read the configured target/bias datasets from `data/ALScreen/` and write to `ALScreen_processing/results/`. They can run independently once the inputs are prepared.
+
+See [ALScreen_processing/README.md](ALScreen_processing/README.md) for additional filtering, ranking and plotting tools, including analyses relevant to Round 4.
 
 ### Round 2, interaction fingerprints
 
-Both scripts work on one target at a time. Computing the fingerprints is the slow part, so it is
-done once and stored in a pickle that the analysis then loads:
+Compute fingerprints once from docked poses and a prepared receptor, then reuse the saved file for clustering and analysis:
 
 ```bash
 cd interaction_fingerprints
@@ -101,36 +97,48 @@ python compute_fingerprints.py --target IL1b \
 python analyse_fingerprints.py --target IL1b --ifp results/IL1b_ifp.pkl
 ```
 
-[interaction_fingerprints/README.md](interaction_fingerprints/README.md) explains the two input
-files and the clustering parameters.
+See [interaction_fingerprints/README.md](interaction_fingerprints/README.md) for input details.
 
 ### Round 3, analogue expansion
 
-See [analogue_analysis/README.md](analogue_analysis/README.md).
+The workflow prepares analogue libraries, examines molecular properties and chemical space, and selects candidates using Glide scores, visual inspection and PELE improvement relative to the parent hit. Files, hits, constraints and optional thresholds are supplied through a manifest:
+
+```bash
+cd analogue_analysis
+python pele_plots.py --manifest manifest.csv --output-dir results/pele_plots
+python final_selection.py --manifest manifest.csv \
+    --output-dir results/final_selection --copy-poses
+```
+
+Adapt `manifest.example.csv` to your inputs. See [analogue_analysis/README.md](analogue_analysis/README.md) for library preparation, helper dependencies and selection criteria.
 
 ### Round 4, representative subset and library scaling
 
-See [representative_subset_library_scaling/README.md](representative_subset_library_scaling/README.md).
+The representative-subset workflow starts from Enamine REAL 5B and applies HAC-stratified extraction, unique-scaffold selection, physicochemical binning, within-bin fingerprint similarity filtering and balanced merging. The final subset is assessed using iSIM and UMAP.
+
+Run the seven numbered scripts in order. This constructs a diversity-oriented subset; similarity filtering is performed within bins rather than globally. See [representative_subset_library_scaling/README.md](representative_subset_library_scaling/README.md) for the complete workflow and external requirements. Docking-score analysis tools are described in [ALScreen_processing/README.md](ALScreen_processing/README.md).
 
 ### Supplementary, reference compounds
 
-Properties first, plot second. This one is worth running early, because the library-wide plots
-further down reuse its output:
+Calculate properties for each reference or experimental table before generating the comparison plot:
 
 ```bash
 cd reference_compounds
-python compute_properties.py            # KD, MW, heavy atoms, ΔG, ligand efficiency, linearity ratio
-python plot_strip_plot.py               # hits of each round against the reference compounds
+python compute_properties.py --input ../data/reference_compounds/IL1b_reference.csv
+python compute_properties.py --input ../data/experimental_hits/IL1b_round1.csv \
+    --affinity_column KD_uM --affinity_units uM
+python plot_strip_plot.py
 ```
+
+Repeat property calculation for all datasets needed by the plot. See [reference_compounds/README.md](reference_compounds/README.md).
 
 ### Supplementary, chemical diversity
 
-The chemotypes are computed once and then reused by the three plots, which you can run in any
-order or on their own:
+Compute chemotypes first, then generate the plots independently:
 
 ```bash
 cd chemical_diversity
-python compute_chemotypes.py            # chemotypes and scaffold chemotypes per round
+python compute_chemotypes.py
 python plot_chemical_diversity.py
 python plot_sankey_grid.py
 python plot_umap_grid.py
@@ -138,51 +146,36 @@ python plot_umap_grid.py
 
 ### Supplementary, large libraries properties
 
-These go over the full Enamine REAL libraries, so they are meant for an HPC cluster rather than
-a laptop. The `run_*.sh` scripts are SLURM jobs, and you will need to edit the account, QoS and
-module lines for your own cluster. Finished partitions are skipped, so if a job is killed you
-can resubmit the same command and it picks up where it left off.
-[large_libraries_properties/README.md](large_libraries_properties/README.md) goes through all
-of this in detail, including how the library has to be prepared.
+These analyses process full libraries and are intended for an HPC cluster. Prepare partitioned Parquet inputs and adapt the SLURM account, QoS, environment and resource settings to your cluster.
 
-As an example, here is the molecular weight distribution of both libraries, with the 65B one
-split over 48 nodes and the 5B one over 7:
+For example, calculate molecular weights and plot their distributions:
 
 ```bash
 cd large_libraries_properties
 mkdir -p logs
-sbatch --array=0-47 run_calculate_mw_database.sh /path/to/Enamine_REAL_65B_parquet results/mw/enamine_65B
-sbatch --array=0-6  run_calculate_mw_database.sh /path/to/Enamine_REAL_5B_parquet  results/mw/enamine_5B
+sbatch --array=0-47 run_calculate_mw_database.sh \
+    /path/to/Enamine_REAL_65B_parquet results/mw/enamine_65B
+sbatch --array=0-6 run_calculate_mw_database.sh \
+    /path/to/Enamine_REAL_5B_parquet results/mw/enamine_5B
 python plot_mw_database.py results/mw/enamine_5B results/mw/enamine_65B
 ```
 
-The linearity ratios and the unique scaffolds follow the same pattern:
+Linearity-ratio and unique-scaffold calculations follow the same submission pattern. Finished partitions are skipped when jobs are resubmitted. Prepare reference-compound properties before plots that overlay them.
 
-```bash
-sbatch run_calculate_linearity_ratios_database.sh /path/to/Enamine_REAL_65B_parquet results/linearity/enamine_65B
-sbatch run_calculate_linearity_ratios_database.sh /path/to/Enamine_REAL_5B_parquet  results/linearity/enamine_5B
-python plot_linearity_ratios_database.py results/linearity/enamine_5B results/linearity/enamine_65B
-
-sbatch run_calculate_unique_scaffolds_database.sh /path/to/Enamine_REAL_65B_parquet results/scaffolds/enamine_65B
-sbatch run_calculate_unique_scaffolds_database.sh /path/to/Enamine_REAL_5B_parquet  results/scaffolds/enamine_5B
-```
-
-Both plotting scripts draw the reference compounds on top of the library distributions, so
-`reference_compounds/compute_properties.py` has to have been run first.
+See [large_libraries_properties/README.md](large_libraries_properties/README.md) for input preparation and cluster configuration.
 
 ## Citation
 
-If you use this code, please cite the paper (reference and DOI to be added once it is published).
+If you use this code, please cite the paper. The reference and DOI will be added once it is published.
 
 ## Contact
 
-Questions about the code or the data are welcome:
+Questions about the code or data are welcome:
 
+**Isaac Soul Garcia**, [isaac.soulgarcia@bsc.es](mailto:isaac.soulgarcia@bsc.es)
 **Júlia Vilalta Mor**, [julia.vilalta@bsc.es](mailto:julia.vilalta@bsc.es)
+**Dr. Isaac Filella-Merce**, [ifilella@nostrumbiodiscovery.com](mailto:ifilella@nostrumbiodiscovery.com)
 
 ## Acknowledgments
 
-This project, with reference number CPP2022-009737, has been funded by the State Research Agency
-(AEI) through the State Program to Promote Scientific-Technical Research and its Transfer, part
-of the State Plan for Scientific, Technical, and Innovation Research 2021-2023, within the
-framework of the Recovery, Transformation, and Resilience Plan (Next Generation EU funds).
+This project, with reference number CPP2022-009737, has been funded by the State Research Agency (AEI) through the State Program to Promote Scientific-Technical Research and its Transfer, part of the State Plan for Scientific, Technical, and Innovation Research 2021–2023, within the framework of the Recovery, Transformation, and Resilience Plan (Next Generation EU funds).
