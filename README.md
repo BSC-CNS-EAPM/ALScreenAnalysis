@@ -172,9 +172,9 @@ If you use this code, please cite the paper. The reference and DOI will be added
 
 Questions about the code or data are welcome:
 
-**Isaac Soul Garcia**, [isaac.soulgarcia@bsc.es](mailto:isaac.soulgarcia@bsc.es)
-**Júlia Vilalta Mor**, [julia.vilalta@bsc.es](mailto:julia.vilalta@bsc.es)
-**Dr. Isaac Filella-Merce**, [ifilella@nostrumbiodiscovery.com](mailto:ifilella@nostrumbiodiscovery.com)
+- **Isaac Soul Garcia**, [isaac.soulgarcia@bsc.es](mailto:isaac.soulgarcia@bsc.es)
+- **Júlia Vilalta Mor**, [julia.vilalta@bsc.es](mailto:julia.vilalta@bsc.es)
+- **Dr. Isaac Filella-Merce**, [ifilella@nostrumbiodiscovery.com](mailto:ifilella@nostrumbiodiscovery.com)
 
 ## Acknowledgments
 
