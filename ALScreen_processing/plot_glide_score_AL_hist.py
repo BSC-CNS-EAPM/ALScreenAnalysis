@@ -98,7 +98,24 @@ def plot_hists(dfs_dbs, dfs_refs, colors_dbs, colors_refs,
 
 
 if __name__ == '__main__':
+    # Run from ALScreen_processing/ (shell commands):
+    # python plot_glide_score_AL_hist.py --db_csvs ../data/ALScreen/IL1b/unbias/initial.csv ../data/ALScreen/IL1b/unbias/pred1.csv ../data/ALScreen/IL1b/unbias/pred2.csv --ref_csvs ../data/ALScreen/IL1b/unbias/reference.csv --db_colors grey blue red --ref_colors red --db_labels 'Initial 50k' 'Prediction 1' 'Prediction 2' --ref_labels 'Reference Compounds' -o IL1b_init_pred1_pred2_hist_unbias
+
     import argparse
+    import sys
+    from pathlib import Path
+
+    here = Path(__file__).resolve().parent
+    data = here.parent / 'data' / 'ALScreen' / 'IL1b' / 'unbias'
+    # Executed automatically by python plot_glide_score_AL_hist.py; edit these arguments to change the run.
+    default_run = [
+        '--db_csvs', str(data / 'initial.csv'), str(data / 'pred1.csv'), str(data / 'pred2.csv'),
+        '--ref_csvs', str(data / 'reference.csv'),
+        '--db_colors', 'grey', 'blue', 'red', '--ref_colors', 'red',
+        '--db_labels', 'Initial 50k', 'Prediction 1', 'Prediction 2',
+        '--ref_labels', 'Reference Compounds',
+        '-o', str(here / 'results' / 'IL1b_init_pred1_pred2_hist_unbias'),
+    ]
     parser = argparse.ArgumentParser(description='This script takes various csv\
     files and outputs their histogram plots. Furthermore, you can also\
     modify the plot parameters (colors, labels, etc.)')
@@ -134,7 +151,7 @@ if __name__ == '__main__':
                         default='glide_histogram')
     parser.add_argument('-f', help='Frequency instead of counts in hists',
                         default=False, action='store_true')
-    args = parser.parse_args()
+    args = parser.parse_args(default_run if len(sys.argv) == 1 else None)
 
     """
     # Check args
@@ -174,6 +191,7 @@ if __name__ == '__main__':
     bins = int(args.b)
     ref_gscores = args.ref_gscores
     output = args.o
+    Path(output).parent.mkdir(parents=True, exist_ok=True)
     frequency = args.f
 
     # Load csv as dataframes

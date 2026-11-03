@@ -24,7 +24,16 @@ def main(ref_csv, db_csv):
 
 
 if __name__ == '__main__':
+    # Run from ALScreen_processing/ (shell commands):
+    # python rank_ref_cmpds.py --db_csv ../data/ALScreen/IL1b/unbias/pred2.csv --ref_csv ../data/ALScreen/IL1b/unbias/reference.csv
+
     import argparse
+    import sys
+    from pathlib import Path
+
+    data = Path(__file__).resolve().parents[1] / 'data' / 'ALScreen' / 'IL1b' / 'unbias'
+    # Executed automatically by python rank_ref_cmpds.py; edit these arguments to change the run.
+    default_run = ['--db_csv', str(data / 'pred2.csv'), '--ref_csv', str(data / 'reference.csv')]
     parser = argparse.ArgumentParser(description='rank reference compounds\
                                      in the context of db compounds')
     requiredArguments = parser.add_argument_group('required arguments')
@@ -34,7 +43,7 @@ if __name__ == '__main__':
     requiredArguments.add_argument('--db_csv',
                                    help='glide simplified output csv for\
                                    DB compounds', required=True)
-    args = parser.parse_args()
+    args = parser.parse_args(default_run if len(sys.argv) == 1 else None)
 
     ref_csv = args.ref_csv
     db_csv = args.db_csv

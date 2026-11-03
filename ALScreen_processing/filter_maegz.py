@@ -5,6 +5,14 @@ import numpy as np
 from schrodinger.analysis.transformations import structure_to_rdkit_smiles
 
 if __name__ == '__main__':
+    
+    # Run from ALScreen_processing/ (shell commands):
+    # Missing input: data/ contains no Glide pose-viewer .maegz files.
+    # Requires the original pose viewer and a licensed Schrodinger installation.
+    # With that additional input (replace /path/to/glide_pv.maegz):
+    # $SCHRODINGER/run filter_maegz.py --maegz /path/to/glide_pv.maegz -o filtered --metric_threshold -8 --neutral
+    # The supplied SDF/PDB files are not pose-viewer .maegz files.
+
     import argparse
     parser = argparse.ArgumentParser(description='Filter maegz poses\
                                      by the best pose for each ligand\

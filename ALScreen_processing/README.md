@@ -2,6 +2,43 @@
 
 Scripts for processing Glide docking outputs and analysing ALScreen predictions. They select the best pose per ligand, filter structures, compare score distributions, evaluate prediction errors, and generate the tables and figures for Round 1&4 and the Supplementary Information.
 
+## Run directly with the supplied data
+
+Run any of the following without arguments, from this folder:
+
+```bash
+python plot_glide_score_AL_hist.py
+python glide_score_threshold.py
+python rank_ref_cmpds.py
+python training_score_diff.py
+python process_glide_csv_output.py
+python plot_grid_gscore_histograms.py
+python prediction_errors.py
+python statistical_analysis.py
+```
+
+These execute actual hardcoded runs in their main sections. Input paths are resolved
+relative to the script, so `python ALScreen_processing/<script>.py` also works from
+the repository root, and absolute script paths work from other directories.
+
+| Script | No-argument execution |
+| --- | --- |
+| `plot_glide_score_AL_hist.py` | IL1b/unbias initial, pred1 and pred2 histograms, with reference compounds; grey/blue/red colours and the supplied labels |
+| `glide_score_threshold.py` | IL1b/unbias initial, pred1 and pred2 counts below −7, −7.5, −8, −8.5, −9, −9.5, −10 and −10.5 |
+| `rank_ref_cmpds.py` | IL1b/unbias reference ranks against pred2 |
+| `training_score_diff.py` | IL1b/unbias pred2 ALScreen errors; extracts 7,500 smallest and 7,500 largest errors |
+| `process_glide_csv_output.py` | Best-pose processing of IL1b/unbias pred2 |
+| `plot_grid_gscore_histograms.py`, `prediction_errors.py`, `statistical_analysis.py` | All supplied targets and bias conditions |
+
+Default output files go into `ALScreen_processing/results/`; threshold counts and
+reference ranks print to the terminal. Default executions leave input files unchanged.
+The five individual-dataset scripts define their hardcoded settings in `default_run`
+inside the main block. Their existing command-line options remain available: passing
+arguments uses the explicit command instead of the hardcoded run.
+
+`filter_maegz.py` is the exception: no `.maegz` pose viewer is supplied, so it still
+requires an additional original Glide file and the Schrödinger environment.
+
 Lower Glide gscores indicate more favourable docking scores.
 
 ## Requirements
@@ -24,10 +61,12 @@ python -m pip install numpy pandas matplotlib seaborn scipy statsmodels
 python process_glide_csv_output.py --csv docking.csv
 ```
 
-The input must contain `title`, `SMILES`, and `r_i_glide_gscore`. It writes two files alongside the input:
+Raw inputs contain `title`, `SMILES`, and `r_i_glide_gscore`. The supplied simplified
+CSV files (`ID`, `SMILES`, `glide_gscore`) are also accepted. With an explicit `--csv`, it writes two files alongside the input unless `-o` /
+`--output-prefix` is supplied. The no-argument run writes them in `results/`:
 
 - `docking_best.csv`: selected poses with all original columns.
-- `docking_best_simple.csv`: selected poses with columns `id`, `smiles`, and `glide_gscore`.
+- `docking_best_simple.csv`: selected poses with columns `ID`, `SMILES`, and `glide_gscore`.
 
 ### Filter a Maestro pose file
 
@@ -103,7 +142,8 @@ It excludes scores at or above 50, then prints the database's minimum and maximu
 python training_score_diff.py --csv merged_predictions.csv -n 1000 -o training
 ```
 
-The input must contain `ID`, `SMILES`, `glide_gscore`, and `dockscore`. Rows with `glide_gscore >= 50` are excluded. Outputs are:
+The input must contain `ID`, `SMILES` (or `SMILE`, as in the supplied ALScreen tables),
+`glide_gscore`, and `dockscore`. Rows with `glide_gscore >= 50` are excluded. Outputs are:
 
 - `<output>_top_<n>k.csv`: smallest errors, retaining input columns and adding `score_diff`.
 - `<output>_bottom_<n>k.csv`: largest errors, retaining input columns and adding `score_diff`.
