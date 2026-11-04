@@ -19,7 +19,7 @@ The scripts here prepare and analyse the data for the figures and tables reporte
 |---|---|---|
 | [ALScreen_processing/](ALScreen_processing/) | **Rounds 1 and 4**, and Supplementary | Glide pose processing, score distributions, prediction errors and statistical comparisons |
 | [interaction_fingerprints/](interaction_fingerprints/) | **Round 2**, interaction fingerprint-driven selection | Protein-ligand interaction fingerprints, clustering and interaction frequencies |
-| [analogue_analysis/](analogue_analysis/) | **Round 3**, analogue expansion | Analogue library preparation, molecular properties, chemical space, Glide/PELE comparisons and final selection |
+| [analogue_analysis/](analogue_analysis/) | **Round 3**, analogue expansion | Analogue preparation, Glide/PELE comparisons and final selection |
 | [representative_subset_library_scaling/](representative_subset_library_scaling/) | **Round 4**, representative subset and library scaling | Construction and analysis of a diverse Enamine REAL 5B subset for active-learning seeding |
 | [large_libraries_properties/](large_libraries_properties/) | Supplementary | Molecular weight, linearity ratio and unique Bemis-Murcko scaffolds of the 5B and 65B libraries |
 | [reference_compounds/](reference_compounds/) | Supplementary | Molecular and affinity-derived properties of known binders and experimentally tested compounds |
@@ -38,11 +38,9 @@ conda env create -f environment.yml
 conda activate alscreen-analysis
 ```
 
-Additional components are required for particular workflows:
+Additional components are required for particular scripts:
 
 - **Schrödinger installation and license** for `ALScreen_processing/filter_maegz.py`.
-- **MolecularAnalysis** for the analogue CSV/SDF/MolDB helpers.
-- **TAPNN** and an importable **`utils.comp.calculate_isim`** implementation for the representative-subset workflow.
 
 Check the corresponding folder README for dependencies and configuration. For example, run Maestro pose filtering through the Schrödinger interpreter:
 
