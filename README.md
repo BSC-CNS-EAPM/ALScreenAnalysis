@@ -58,7 +58,7 @@ Similarly, data generated from the analogue search analysis are not included due
 
 ## How to run the analyses
 
-Execute the following scripts from the repository root. Follow the execution order from the blocks so that intermediate data required for the plots or other anlaysis is generated. Folder READMEs describe inputs, outputs and parameters; scripts accepting arguments also provide `--help`.
+Execute the following scripts from the repository root. Follow the execution order from the blocks so that intermediate data required for the plots or other analysis are generated. Subdirectory READMEs describe inputs, outputs and parameters; scripts accepting arguments also provide `--help`.
 
 ### Round 1 and the supplementary docking analysis
 
@@ -67,14 +67,18 @@ Process raw Glide output if necessary, then generate score distributions, predic
 ```bash
 cd ALScreen_processing
 python process_glide_csv_output.py
+python rank_ref_cmpds.py
+python glide_score_threshold.py 
+python plot_glide_score_AL_hist.py
+python training_score_diff.py
 python plot_grid_gscore_histograms.py
 python prediction_errors.py
 python statistical_analysis.py
 ```
 
-The three analysis scripts read the configured target/bias datasets from `data/ALScreen/` and write to `ALScreen_processing/results/`. They can run independently once the inputs are prepared.
+The analysis scripts read the configured target/bias datasets from `data/ALScreen/`.
 
-See [ALScreen_processing/README.md](ALScreen_processing/README.md) for additional filtering, ranking and plotting tools, including analyses relevant to Round 4.
+See [ALScreen_processing/README.md](ALScreen_processing/README.md) for additional filtering, ranking and plotting tools.
 
 ### Round 2, interaction fingerprints
 
