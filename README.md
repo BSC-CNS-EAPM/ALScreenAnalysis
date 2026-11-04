@@ -212,27 +212,22 @@ python plot_umap_grid.py
 
 ### Supplementary, large libraries properties
 
-These analyses process full libraries and are intended for an HPC cluster. Prepare partitioned Parquet inputs and adapt the SLURM account, QoS, environment and resource settings to your cluster.
+These scripts calculate molecular weights, molecular linearity ratios and unique
+Bemis–Murcko scaffolds across the full Enamine REAL 5B and REAL Space 65B libraries,
+and plot molecular-weight and linearity-ratio distributions alongside reference
+compounds.
 
-For example, calculate molecular weights and plot their distributions:
+The full Enamine databases are not included in this repository or the supplied data,
+so these library-wide analyses cannot be run using the supplied data alone. The
+libraries must be obtained separately from Enamine and prepared as partitioned
+Parquet files.
 
-```bash
-cd large_libraries_properties
+The library-wide calculations are designed for an HPC environment and submitted as
+SLURM jobs using the supplied `run_*.sh` scripts. Account, QoS, software environment
+and resource settings must be adapted to the cluster being used.
 
-mkdir -p logs
-
-sbatch --array=0-47 run_calculate_mw_database.sh \
-    /path/to/Enamine_REAL_65B_parquet results/mw/enamine_65B
-
-sbatch --array=0-6 run_calculate_mw_database.sh \
-    /path/to/Enamine_REAL_5B_parquet results/mw/enamine_5B
-
-python plot_mw_database.py results/mw/enamine_5B results/mw/enamine_65B
-```
-
-Linearity-ratio and unique-scaffold calculations follow the same submission pattern. Finished partitions are skipped when jobs are resubmitted. Prepare reference-compound properties before plots that overlay them.
-
-See [large_libraries_properties/README.md](large_libraries_properties/README.md) for input preparation and cluster configuration.
+See [large_libraries_properties/README.md](large_libraries_properties/README.md) for
+input preparation and cluster requirements.
 
 ## Citation
 
