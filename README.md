@@ -50,7 +50,7 @@ Check the corresponding subdirectory README for specific dependencies and config
 
 The analysis data is too large for git and is deposited in Zenodo:
 
-> **Zenodo DOI: 10.5281/zenodo.23689450.**
+> **Zenodo DOI: [10.5281/zenodo.23689450](https://doi.org/10.5281/zenodo.23689451)**
 
 Download all ZIP files and exrtact them into [data/](data/). 
 
