@@ -42,13 +42,7 @@ Additional components are required for particular scripts:
 
 - **Schrödinger installation and license** for `ALScreen_processing/filter_maegz.py`.
 
-Check the corresponding folder README for dependencies and configuration. For example, run Maestro pose filtering through the Schrödinger interpreter:
-
-```bash
-"$SCHRODINGER/run" ALScreen_processing/filter_maegz.py \
-    --maegz glide_pv.maegz -o filtered \
-    --metric gscore --metric_threshold -8 --neutral
-```
+Check the corresponding subdirectory README for specific dependencies and configuration.
 
 ## Data
 
