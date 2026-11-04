@@ -1,6 +1,6 @@
 # Data
 
-The data needed to run the git is too large and is deposited in Zenodo. **[DOI: to be added]**
+The data needed to run the git is too large and is deposited in Zenodo. **[DOI: [10.5281/zenodo.23689450](https://doi.org/10.5281/zenodo.23689451)]**
 
 Download and extract the ZIP files to follow the data distribution seen below:
 
