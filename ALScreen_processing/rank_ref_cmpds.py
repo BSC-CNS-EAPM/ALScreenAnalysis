@@ -1,7 +1,8 @@
 import pandas as pd
+from pathlib import Path
 
 
-def main(ref_csv, db_csv):
+def main(ref_csv, db_csv, output_prefix=None):
 
     df_ref = pd.read_csv(ref_csv)
     df_db = pd.read_csv(db_csv)
@@ -17,10 +18,18 @@ def main(ref_csv, db_csv):
     df_sort = df_total.sort_values(by='glide_gscore', ignore_index=True)
     df_ref_sort = df_ref.sort_values(by='glide_gscore', ignore_index=True)
 
+    lines = []
     for compound in df_ref_sort['ID'].tolist():
         print(compound)
         index = df_sort.index[df_sort['ID'] == compound].tolist()[0]+1
         print('%d/%d' % (index, len(df_total)))
+        lines.append(f'{compound}\t{index}/{len(df_total)}')
+
+    prefix = Path(output_prefix) if output_prefix is not None else Path(__file__).resolve().parent / 'results' / 'IL1b_unbias_pred2'
+    output = Path(str(prefix) + '_ref_rank.txt')
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text('Reference compound\tRank/total\n' + '\n'.join(lines) + '\n', encoding='utf-8')
+    print(f'Reference ranks saved to {output}')
 
 
 if __name__ == '__main__':
@@ -43,9 +52,12 @@ if __name__ == '__main__':
     requiredArguments.add_argument('--db_csv',
                                    help='glide simplified output csv for\
                                    DB compounds', required=True)
+    parser.add_argument('-o', '--output-prefix',
+                        default=str(Path(__file__).resolve().parent / 'results' / 'IL1b_unbias_pred2'),
+                        help='Output prefix; writes <output>_ref_rank.txt')
     args = parser.parse_args(default_run if len(sys.argv) == 1 else None)
 
     ref_csv = args.ref_csv
     db_csv = args.db_csv
 
-    main(ref_csv, db_csv)
+    main(ref_csv, db_csv, args.output_prefix)

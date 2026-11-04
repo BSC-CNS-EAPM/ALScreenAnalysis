@@ -1,13 +1,26 @@
 import pandas as pd
+from pathlib import Path
 
 
-def gscore_threshold(dfs_db, gscore_thresh):
-    for db_csv in dfs_db:
+def gscore_threshold(dfs_db, gscore_thresh, output_prefix=None, dataset_names=None):
+    lines = []
+    for i, db_csv in enumerate(dfs_db):
+        name = str(dataset_names[i]) if dataset_names is not None else f'Dataset {i + 1}'
+        lines.append(f'Dataset: {name}')
         for gscore in gscore_thresh:
             gscore = float(gscore)
             counts = db_csv[db_csv['glide_gscore'] < gscore].shape[0]
-            print(f"Number of compounds below {gscore}: {counts}")
+            line = f"Number of compounds below {gscore}: {counts}"
+            print(line)
+            lines.append(line)
         print('----------------------------')
+        lines.append('----------------------------')
+
+    prefix = Path(output_prefix) if output_prefix is not None else Path(__file__).resolve().parent / 'results' / 'IL1b_unbias'
+    output = Path(str(prefix) + '_gscore_threshold.txt')
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text('\n'.join(lines) + '\n', encoding='utf-8')
+    print(f'Threshold counts saved to {output}')
 
 
 if __name__ == '__main__':
@@ -35,6 +48,9 @@ if __name__ == '__main__':
                                    nargs='+',
                                    help='List of glide gscore thresholds',
                                    required=True)
+    parser.add_argument('-o', '--output-prefix',
+                        default=str(Path(__file__).resolve().parent / 'results' / 'IL1b_unbias'),
+                        help='Output prefix; writes <output>_gscore_threshold.txt')
     args = parser.parse_args(default_run if len(sys.argv) == 1 else None)
 
     # Load arguments
@@ -44,4 +60,4 @@ if __name__ == '__main__':
 
     gscore_thresh = args.gscore_thresh
 
-    gscore_threshold(dfs_db, gscore_thresh)
+    gscore_threshold(dfs_db, gscore_thresh, args.output_prefix, args.db_csvs)
