@@ -50,7 +50,7 @@ The analysis data is too large for git and is deposited in Zenodo:
 
 > **Zenodo DOI: to be added.**
 
-Download the archive and extract it into [data/](data/). The expected structure, column names and docking conditions are described in [data/README.md](data/README.md). Additional inputs for analogue and representative-subset analyses are documented in their respective folders.
+Download all ZIP files and exrtact them into [data/](data/). Additional inputs for analogue and representative-subset analyses are documented in their respective folders.
 
 Library-wide analyses require the Enamine REAL 5B and 65B libraries as partitioned Parquet files. These are distributed by [Enamine](https://enamine.net/compound-collections/real-compounds) and are not redistributed here. Representative-subset construction additionally requires HAC-organised library files and matching population counts.
 
