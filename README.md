@@ -76,8 +76,6 @@ python prediction_errors.py
 python statistical_analysis.py
 ```
 
-The analysis scripts read the configured target/bias datasets from `data/ALScreen/`.
-
 See [ALScreen_processing/README.md](ALScreen_processing/README.md) for additional filtering, ranking and plotting tools.
 
 ### Round 2, interaction fingerprints
