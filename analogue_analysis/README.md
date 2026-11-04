@@ -6,14 +6,6 @@ The revised scripts accept researcher-supplied paths, hit IDs, constraints, scor
 
 ## Installation
 
-Use Python 3.9 or newer in an environment with the required packages:
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-Keep `analogue_common.py` and `batch_common.py` beside the scripts; they provide shared input validation and helper invocation. Each executable script provides `--help`.
-
 The CSV/SDF/MolDB wrappers use these helper scripts, now supplied with the project:
 
 - `get_sdf_from_csv.py`
