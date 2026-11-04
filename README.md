@@ -8,7 +8,7 @@ This repository holds the analysis code behind the paper:
 
 The study introduces **ALScreen**, an active-learning framework based on the ScoreFormer deep surrogate docking model. It screens ultra-large chemical libraries against three interleukin protein-protein interaction targets: **IL-1β**, **IL-2** and **IL-36γ**. ALScreen was initially applied to exhaustively evaluate 5B compounds from the Enamine REAL database, and furthered scaled to evaluate up to 65 billion compounds from Enamine REAL Space.
 
-The scripts here prepare the data and generate the analyses, figures and tables reported in the study. The links related to the data required for such analysis are found within the [data/README.md](data/README.md).
+The scripts here prepare and analyse the data for the figures and tables reported in the study. The links related to the data required for such analysis are found within the [data/README.md](data/README.md).
 
 ![ALScreen workflow and selection criteria](figures/figure1.png)
 
