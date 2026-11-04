@@ -13,9 +13,9 @@ The scripts here prepare and analyse the data for the figures and tables reporte
 ![ALScreen workflow and selection criteria](figures/figure1.png)
 
 
-## Contents in each folder
+## Contents in each subdirectory
 
-| Folder | Paper section | What it does |
+| Subdirectory | Paper section | What it does |
 |---|---|---|
 | [ALScreen_processing/](ALScreen_processing/) | **Rounds 1 and 4**, and Supplementary | Glide pose processing, score distributions, prediction errors and statistical comparisons |
 | [interaction_fingerprints/](interaction_fingerprints/) | **Round 2**, interaction fingerprint-driven selection | Protein-ligand interaction fingerprints, clustering and interaction frequencies |
@@ -56,9 +56,9 @@ Library-wide analyses require the Enamine REAL 5B and 65B libraries as partition
 Similarly, data generated from the analogue search analysis are not included due to their large volume. These data are available upon reasonable request to the corresponding author of the paper.
 
 
-## Examples of how to run the analyses
+## How to run the analyses
 
-Run these examples from the repository root, entering the relevant folder first. Compute intermediate data before running plots that depend on it. Folder READMEs describe inputs, outputs and parameters; scripts accepting arguments also provide `--help`.
+Execute the following scripts from the repository root. Follow the execution order from the blocks so that intermediate data required for the plots or other anlaysis is generated. Folder READMEs describe inputs, outputs and parameters; scripts accepting arguments also provide `--help`.
 
 ### Round 1 and the supplementary docking analysis
 
@@ -66,7 +66,7 @@ Process raw Glide output if necessary, then generate score distributions, predic
 
 ```bash
 cd ALScreen_processing
-python process_glide_csv_output.py --csv glide_output.csv  # optional preparation
+python process_glide_csv_output.py
 python plot_grid_gscore_histograms.py
 python prediction_errors.py
 python statistical_analysis.py
