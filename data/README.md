@@ -1,6 +1,6 @@
 # Data
 
-The data needed to run the analysis is too large for git and is deposited in Zenodo:
+The data needed to run the git is too large and is deposited in Zenodo. Download and extract the ZIP files to follow the data distribution seen below:
 **[DOI: to be added]**
 
 Download the archive and extract it here, so that this folder looks like:
