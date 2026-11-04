@@ -116,9 +116,11 @@ Compute fingerprints once from docked poses and a prepared receptor, then reuse 
 
 ```bash
 cd interaction_fingerprints
+
 python compute_fingerprints.py --target IL1b \
     --pdb ../data/interaction_fingerprints/IL1b/receptor.pdb \
     --sdf ../data/interaction_fingerprints/IL1b/poses.sdf
+
 python analyse_fingerprints.py --target IL1b --ifp results/IL1b_ifp.pkl
 ```
 
@@ -133,8 +135,7 @@ the parent hit.
 
 Because of their large volume, the full analogue libraries, PELE outputs and
 visual-inspection pose datasets are not included in the supplied data. The complete
-Round 3 workflow therefore cannot be executed using the supplied data alone. The
-scripts can be run once these additional inputs are available. 
+Round 3 workflow therefore cannot be executed using the supplied data alone. These data are available upon reasonable request to the corresponding author of the paper. 
 
 See [analogue_analysis/README.md](analogue_analysis/README.md) for the manifest format,
 library preparation, helper dependencies and selection criteria.
@@ -155,9 +156,12 @@ Calculate properties for each reference or experimental table before generating 
 
 ```bash
 cd reference_compounds
+
 python compute_properties.py --input ../data/reference_compounds/IL1b_reference.csv
+
 python compute_properties.py --input ../data/experimental_hits/IL1b_round1.csv \
     --affinity_column KD_uM --affinity_units uM
+
 python plot_strip_plot.py
 ```
 
@@ -169,9 +173,13 @@ Compute chemotypes first, then generate the plots independently:
 
 ```bash
 cd chemical_diversity
+
 python compute_chemotypes.py
+
 python plot_chemical_diversity.py
+
 python plot_sankey_grid.py
+
 python plot_umap_grid.py
 ```
 
@@ -183,11 +191,15 @@ For example, calculate molecular weights and plot their distributions:
 
 ```bash
 cd large_libraries_properties
+
 mkdir -p logs
+
 sbatch --array=0-47 run_calculate_mw_database.sh \
     /path/to/Enamine_REAL_65B_parquet results/mw/enamine_65B
+
 sbatch --array=0-6 run_calculate_mw_database.sh \
     /path/to/Enamine_REAL_5B_parquet results/mw/enamine_5B
+
 python plot_mw_database.py results/mw/enamine_5B results/mw/enamine_65B
 ```
 
