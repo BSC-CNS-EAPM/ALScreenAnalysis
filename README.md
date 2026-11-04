@@ -60,7 +60,7 @@ Similarly, data generated from the analogue search analysis are not included due
 
 Execute the following scripts from the repository root. Follow the execution order from the blocks so that intermediate data required for the plots or other analysis are generated. Subdirectory READMEs describe inputs, outputs and parameters; scripts accepting arguments also provide `--help`.
 
-### Round 1 and the supplementary docking analysis
+### Round 1 to 4 and supplementary analysis
 
 Process raw Glide output if necessary, then generate score distributions, prediction errors and statistical comparisons:
 
