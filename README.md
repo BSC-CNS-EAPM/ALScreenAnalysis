@@ -6,25 +6,22 @@ This repository holds the analysis code behind the paper:
 >
 > *DOI: to be added once the paper is published.*
 
-The study introduces **ALScreen**, an active-learning framework based on the ScoreFormer deep surrogate docking model. It screens ultra-large chemical libraries against three interleukin protein–protein interaction targets: **IL-1β** (PDB 8C3U), **IL-2** (1PY2) and **IL-36γ** (6P9E).
+The study introduces **ALScreen**, an active-learning framework based on the ScoreFormer deep surrogate docking model. It screens ultra-large chemical libraries against three interleukin protein-protein interaction targets: **IL-1β**, **IL-2** and **IL-36γ**. ALScreen was initially applied to exhaustively evaluate 5B compounds from the Enamine REAL database, and furthered scaled to evaluate up to 65 billion compounds from Enamine REAL Space.
 
-ALScreen was applied to 5 billion compounds from Enamine REAL, with scalability evaluated up to 65 billion compounds. Each active-learning cycle trains on Glide docking scores, predicts scores across the library, docks the top-ranked compounds and adds them to the training pool. Compounds were selected for experimental validation by surface plasmon resonance (SPR) across four rounds using different selection criteria.
-
-The scripts here prepare the datasets and generate the analyses, figures and tables reported in the study.
+The scripts here prepare the data and generate the analyses, figures and tables reported in the study. The links related to the data required for such analysis are found within the [data/README.md](data/README.md).
 
 ![ALScreen workflow and selection criteria](figures/figure1.png)
 
-Each target was screened under two or three docking conditions: `unbias` (no constraints), `bias1` and `bias2` (hydrophobic and/or hydrogen-bond constraints). Their definitions are in [data/README.md](data/README.md).
 
 ## Contents in each folder
 
 | Folder | Paper section | What it does |
 |---|---|---|
 | [ALScreen_processing/](ALScreen_processing/) | **Rounds 1 and 4**, and Supplementary | Glide pose processing, score distributions, prediction errors and statistical comparisons |
-| [interaction_fingerprints/](interaction_fingerprints/) | **Round 2**, interaction fingerprint-driven selection | Protein–ligand interaction fingerprints, clustering and interaction frequencies |
+| [interaction_fingerprints/](interaction_fingerprints/) | **Round 2**, interaction fingerprint-driven selection | Protein-ligand interaction fingerprints, clustering and interaction frequencies |
 | [analogue_analysis/](analogue_analysis/) | **Round 3**, analogue expansion | Analogue library preparation, molecular properties, chemical space, Glide/PELE comparisons and final selection |
 | [representative_subset_library_scaling/](representative_subset_library_scaling/) | **Round 4**, representative subset and library scaling | Construction and analysis of a diverse Enamine REAL 5B subset for active-learning seeding |
-| [large_libraries_properties/](large_libraries_properties/) | Supplementary | Molecular weight, linearity ratio and unique Bemis–Murcko scaffolds of the 5B and 65B libraries |
+| [large_libraries_properties/](large_libraries_properties/) | Supplementary | Molecular weight, linearity ratio and unique Bemis-Murcko scaffolds of the 5B and 65B libraries |
 | [reference_compounds/](reference_compounds/) | Supplementary | Molecular and affinity-derived properties of known binders and experimentally tested compounds |
 | [chemical_diversity/](chemical_diversity/) | Supplementary | Chemotype and scaffold diversity, Sankey diagrams and chemical-space UMAPs |
 | [data/](data/) | | Input data and format descriptions |
@@ -178,4 +175,4 @@ Questions about the code or data are welcome:
 
 ## Acknowledgments
 
-This project, with reference number CPP2022-009737, has been funded by the State Research Agency (AEI) through the State Program to Promote Scientific-Technical Research and its Transfer, part of the State Plan for Scientific, Technical, and Innovation Research 2021–2023, within the framework of the Recovery, Transformation, and Resilience Plan (Next Generation EU funds).
+This project, with reference number CPP2022-009737, has been funded by the State Research Agency (AEI) through the State Program to Promote Scientific-Technical Research and its Transfer, part of the State Plan for Scientific, Technical, and Innovation Research 20212023, within the framework of the Recovery, Transformation, and Resilience Plan (Next Generation EU funds).
