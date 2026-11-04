@@ -8,10 +8,12 @@ Examples:
 python process_glide_csv_output.py \
   --csv ../data/ALScreen/IL1b/unbias/pred2.csv \
   -o results/IL1b_unbias_pred2
+
 python rank_ref_cmpds.py \
   --db_csv ../data/ALScreen/IL1b/unbias/pred2.csv \
   --ref_csv ../data/ALScreen/IL1b/unbias/reference.csv \
   -o results/IL1b_unbias_pred2
+
 python glide_score_threshold.py \
   --db_csvs \
     ../data/ALScreen/IL1b/unbias/initial.csv \
@@ -19,6 +21,7 @@ python glide_score_threshold.py \
     ../data/ALScreen/IL1b/unbias/pred2.csv \
   --gscore_thresh -7 -7.5 -8 -8.5 -9 -9.5 -10 -10.5 \
   -o results/IL1b_unbias
+
 python plot_glide_score_AL_hist.py \
   --db_csvs \
     ../data/ALScreen/IL1b/unbias/initial.csv \
@@ -30,12 +33,16 @@ python plot_glide_score_AL_hist.py \
   --db_labels 'Initial 50k' 'Prediction 1' 'Prediction 2' \
   --ref_labels 'Reference Compounds' \
   -o results/IL1b_init_pred1_pred2_hist_unbias
+
 python training_score_diff.py \
   --csv ../data/ALScreen/IL1b/unbias/pred2_alscreen.csv \
   -n 7500 \
   -o results/IL1b_unbias_train_3_data
+
 python plot_grid_gscore_histograms.py
+
 python prediction_errors.py
+
 python statistical_analysis.py
 ```
 
