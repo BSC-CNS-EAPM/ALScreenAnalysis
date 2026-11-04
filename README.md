@@ -118,20 +118,26 @@ See [interaction_fingerprints/README.md](interaction_fingerprints/README.md) for
 
 ### Round 3, analogue expansion
 
-The workflow prepares analogue libraries, examines molecular properties and chemical space, and selects candidates using Glide scores, visual inspection and PELE improvement relative to the parent hit. Files, hits, constraints and optional thresholds are supplied through a manifest:
+The workflow prepares and intersects analogue libraries, examines molecular properties
+and chemical space, compares Glide docking scores with PELE metrics, and selects
+candidates using docking scores, visual inspection and PELE improvement relative to
+the parent hit.
 
-```bash
-cd analogue_analysis
-python pele_plots.py --manifest manifest.csv --output-dir results/pele_plots
-python final_selection.py --manifest manifest.csv \
-    --output-dir results/final_selection --copy-poses
-```
+Because of their large volume, the full analogue libraries, PELE outputs and
+visual-inspection pose datasets are not included in the supplied data. The complete
+Round 3 workflow therefore cannot be executed using the supplied data alone. The
+scripts can be run once these additional inputs are available. 
 
-Adapt `manifest.example.csv` to your inputs. See [analogue_analysis/README.md](analogue_analysis/README.md) for library preparation, helper dependencies and selection criteria.
+See [analogue_analysis/README.md](analogue_analysis/README.md) for the manifest format,
+library preparation, helper dependencies and selection criteria.
 
 ### Round 4, representative subset and library scaling
 
 The representative-subset workflow starts from Enamine REAL 5B and applies HAC-stratified extraction, unique-scaffold selection, physicochemical binning, within-bin fingerprint similarity filtering and balanced merging. The final subset is assessed using iSIM and UMAP.
+
+You must download the Enamine REAL 5B database and prepare it in the input format
+described in the workflow README before running the seven numbered subsetting
+scripts. The full database is not included in this repository or the supplied data.
 
 Run the seven numbered scripts in order. This constructs a diversity-oriented subset; similarity filtering is performed within bins rather than globally. See [representative_subset_library_scaling/README.md](representative_subset_library_scaling/README.md) for the complete workflow and external requirements. Docking-score analysis tools are described in [ALScreen_processing/README.md](ALScreen_processing/README.md).
 
