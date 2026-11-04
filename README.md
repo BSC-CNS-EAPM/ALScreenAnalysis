@@ -145,10 +145,9 @@ library preparation, helper dependencies and selection criteria.
 The representative-subset workflow starts from Enamine REAL 5B and applies HAC-stratified extraction, unique-scaffold selection, physicochemical binning, within-bin fingerprint similarity filtering and balanced merging. The final subset is assessed using iSIM and UMAP.
 
 You must download the Enamine REAL 5B database and prepare it in the input format
-described in the workflow README before running the seven numbered subsetting
-scripts. The full database is not included in this repository or the supplied data.
+described in the workflow README.
 
-Run the seven numbered scripts in order. This constructs a diversity-oriented subset; similarity filtering is performed within bins rather than globally. See [representative_subset_library_scaling/README.md](representative_subset_library_scaling/README.md) for the complete workflow and external requirements. Docking-score analysis tools are described in [ALScreen_processing/README.md](ALScreen_processing/README.md).
+See [representative_subset_library_scaling/README.md](representative_subset_library_scaling/README.md) for the complete workflow and external requirements.
 
 ### Supplementary, reference compounds
 
