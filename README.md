@@ -17,15 +17,15 @@ ALScreen pseudocode is available in [ALScreen_pseudocode/alscreen_pseudocode.md]
 
 ## Contents in each subdirectory
 
-| Subdirectory | Paper section | What it does | Executability and data availability |
+| Subdirectory | Paper section | What it does | Executability |
 |---|---|---|---|
-| [ALScreen_processing/](ALScreen_processing/) | **Rounds 1 and 4**, and Supplementary | Glide pose processing, score distributions, prediction errors and statistical comparisons | CSV analyses run with the supplied data. The `.maegz` filter requires an additional Glide pose-viewer file and Schrödinger installation. |
-| [interaction_fingerprints/](interaction_fingerprints/) | **Round 2**, interaction fingerprint-driven selection | Protein-ligand interaction fingerprints, clustering and interaction frequencies | Executable with the supplied receptor and pose files. |
-| [analogue_analysis/](analogue_analysis/) | **Round 3**, analogue expansion | Analogue preparation, Glide/PELE comparisons and final selection | The complete workflow requires additional analogue, PELE and pose data, available upon reasonable request. |
-| [representative_subset_library_scaling/](representative_subset_library_scaling/) | **Round 4**, representative subset and library scaling | Construction and analysis of a diverse Enamine REAL 5B subset for active-learning seeding | Requires the full Enamine database, obtained separately from external sources (Enamine); not executable with the supplied data alone. |
-| [large_libraries_properties/](large_libraries_properties/) | Supplementary | Molecular weight, linearity ratio and unique Bemis-Murcko scaffolds of the 5B and 65B libraries | Full-library analyses require Enamine databases obtained separately from external sources (Enamine) and an HPC environment with SLURM; not executable with the supplied data alone. |
-| [reference_compounds/](reference_compounds/) | Supplementary | Molecular and affinity-derived properties of known binders and experimentally tested compounds | Executable with the supplied data. |
-| [chemical_diversity/](chemical_diversity/) | Supplementary | Chemotype and scaffold diversity, Sankey diagrams and chemical-space UMAPs | Executable with the supplied data. |
+| [ALScreen_processing/](ALScreen_processing/) | **Rounds 1 and 4**, and Supplementary | Glide pose processing, score distributions, prediction errors and statistical comparisons | ✅ |
+| [interaction_fingerprints/](interaction_fingerprints/) | **Round 2**, interaction fingerprint-driven selection | Protein-ligand interaction fingerprints, clustering and interaction frequencies | ✅ |
+| [analogue_analysis/](analogue_analysis/) | **Round 3**, analogue expansion | Analogue preparation, Glide/PELE comparisons and final selection | ❌ (Require additional data, available upon reasonable request.) |
+| [representative_subset_library_scaling/](representative_subset_library_scaling/) | **Round 4**, representative subset and library scaling | Construction and analysis of a diverse Enamine REAL 5B subset for active-learning seeding | ❌ (Requires additional data from a third party) |
+| [large_libraries_properties/](large_libraries_properties/) | Supplementary | Molecular weight, linearity ratio and unique Bemis-Murcko scaffolds of the 5B and 65B libraries | ❌ (Requires additional data from a third party) |
+| [reference_compounds/](reference_compounds/) | Supplementary | Molecular and affinity-derived properties of known binders and experimentally tested compounds | ✅ |
+| [chemical_diversity/](chemical_diversity/) | Supplementary | Chemotype and scaffold diversity, Sankey diagrams and chemical-space UMAPs | ✅ |
 | [data/](data/) | | Input data and format descriptions |
 | [figures/](figures/) | | Workflow figure |
 
