@@ -1,9 +1,9 @@
 # Data
 
-The data needed to run the git is too large and is deposited in Zenodo. Download and extract the ZIP files to follow the data distribution seen below:
-**[DOI: to be added]**
+The data needed to run the git is too large and is deposited in Zenodo. **[DOI: to be added]**
 
-Download the archive and extract it here, so that this folder looks like:
+Download and extract the ZIP files to follow the data distribution seen below:
+
 
 ```
 data/
