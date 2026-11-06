@@ -1,32 +1,34 @@
 # ALScreen framework Pseudocode
 
-## ScoreFormer training: ScoreFormer.Train
+## ScoreFormer.Train
 
 ```text
-Input: D: molecules and docking scores; H: model and optimization settings, including weighting strength alpha and log-weight cap c; E: maximum training epochs.
-Output: f_theta: trained ScoreFormer docking-score surrogate.
+Input: D: molecules and their docking scores; H: model and parameters, including weighting strength alpha and log-weight cap c; E: maximum training epochs.
+Output: f_theta: trained ScoreFormer.
 
  1  Prepare molecular representations G from D for ScoreFormer.
  2  Split G into training set G_tr and validation set G_val.
- 3  Initialize ScoreFormer parameters theta, optimizer and learning-rate schedule using H.
- 4  for e = 1, ..., E do
- 5      Set f_theta to training mode.
- 6      for each mini-batch B subset of G_tr do
- 7          y_hat_i <- f_theta(G_i) for each molecule i in B.
- 8          w_i <- exp(min(-alpha * y_i, c)).
- 9          Loss_B <- SUM(w_i * (y_hat_i - y_i)^2 for i in B) / size(B).
-10          Update theta using the gradient of Loss_B and the optimizer.
-11      end for
-12      Set f_theta to evaluation mode.
-13      Compute validation loss and prediction metrics on G_val.
-14      Save a checkpoint according to the configured policy.
-15      Update the learning-rate schedule.
-16      if a configured stopping condition is met then break.
-17  end for
-18  return f_theta.
+ 3  Initialize f_0 as a ScoreFormer model with random weights.
+ 4  f <- f_0. Initialize the optimizer and learning-rate schedule using H.
+ 5  for e = 1, ..., E do
+ 6      Set f to training mode.
+ 7      for each mini-batch B subset of G_tr do
+ 8          y_hat_i <- f(G_i) for each molecule i in B.
+ 9          w_i <- exp(min(-alpha * y_i, c)).
+10          Loss_B <- SUM(w_i * (y_hat_i - y_i)^2 for i in B) / size(B).
+11          Update the weights of f using the gradient of Loss_B and the optimizer.
+12      end for
+13      Set f to evaluation mode.
+14      Compute validation loss and prediction metrics on G_val.
+15      Save a checkpoint according to the configured policy.
+16      Update the learning-rate schedule.
+17      if a configured stopping condition is met then break.
+18  end for
+19  f_theta <- f with its learned weights theta.
+20  return f_theta.
 ```
 
-## ScoreFormer inference: ScoreFormer.Infer
+## ScoreFormer.Infer
 
 ```text
 Input: L: compounds to be scored; f_theta: trained model returned by ScoreFormer.Train.
