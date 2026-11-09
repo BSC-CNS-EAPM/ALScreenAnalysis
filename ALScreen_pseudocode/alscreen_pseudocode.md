@@ -3,13 +3,13 @@
 ## ScoreFormer.Train
 
 ```text
-Input:  D = {(m_i, y_i)}: molecules m_i and their docking scores y_i;
+Input:  P = {(m_i, y_i)}: training pool, molecules m_i and their docking scores y_i;
         H: hyperparameters (optimizer, learning-rate schedule, batch size,
            weighting strength alpha, log-weight cap c, early-stopping patience p);
         E: maximum number of training epochs.
 Output: f_theta: trained ScoreFormer.
 
- 1  G <- {(G_i, y_i)}, with G_i = Graph(m_i), for each (m_i, y_i) in D.
+ 1  G <- {(G_i, y_i)}, with G_i = Graph(m_i), for each (m_i, y_i) in P.
  2  Split G into a training set G_tr and a validation set G_val.
  3  Initialize theta, the optimizer, and the learning-rate schedule from H.
  4  l* <- +inf;  theta* <- theta;  s <- 0.
@@ -32,16 +32,16 @@ Output: f_theta: trained ScoreFormer.
 ## ScoreFormer.Infer
 
 ```text
-Input:  Q: compounds to be scored;
+Input:  Q = {m_i}: molecules m_i to be scored;
         f_theta^(E): trained model returned by ScoreFormer.Train.
-Output: Y_hat = {(m, y_hat_m)}: predicted docking scores keyed by compound identifier.
+Output: Y_hat = {(m_i, y_hat_i)}: predicted docking scores keyed by molecule identifier.
 
  1  Set f_theta^(E) to evaluation mode (dropout off, gradients disabled).
  2  Y_hat <- empty set.
  3  for each mini-batch B subset of Q do
- 4      G_B <- {Graph(m) : m in B}.
+ 4      G_B <- {Graph(m_i) : m_i in B}.
  5      y_hat_B <- f_theta^(E)(G_B).
- 6      Y_hat <- Y_hat UNION {(m, y_hat_m) for m in B}.
+ 6      Y_hat <- Y_hat UNION {(m_i, y_hat_i) for m_i in B}.
  7  end for
  8  return Y_hat.
 ```
@@ -59,13 +59,13 @@ Input:  L: compound library;
 Output: R: ranked list of prioritized compounds.
 
  1  S <- RepresentativeSubset(L, n_sub).
- 2  D <- O_T(S).  // docking labels {(m, y_m)}
- 3  P_0 <- D;  D_all <- D.  // training pool; all docked compounds
+ 2  D_0 <- O_T(S).  // initial training pool {(m_i, y_i)}
+ 3  P_0 <- D_0;  D_all <- D_0.  // training pool; all docked compounds
  4  f^(0) <- ScoreFormer.Train(P_0, H, E).  // initial training
  5  T_0 <- empty set;  k_final <- 0.
  6  for k = 1, ..., K do
  7      Y_hat_k <- ScoreFormer.Infer(L, f^(k-1)).
- 8      G_k <- the n_oracle compounds in L with the lowest y_hat_m.
+ 8      G_k <- the n_oracle compounds in L with the lowest y_hat_i.
  9      D_k <- O_T(G_k).
 10      D_all <- D_all UNION D_k.
 11      e_m <- |y_hat_m - y_m| for each m in G_k.
