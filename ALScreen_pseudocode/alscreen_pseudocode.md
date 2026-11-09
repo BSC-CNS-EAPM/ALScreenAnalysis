@@ -62,7 +62,7 @@ Output: R: ranked list of prioritized compounds.
  2  D_0 <- O_T(S).  // initial training pool {(m_i, y_i)}
  3  P_0 <- D_0;  D_all <- D_0.  // training pool; all docked compounds
  4  f^(0) <- ScoreFormer.Train(P_0, H, E).  // initial training
- 5  T_0 <- empty set;  k_final <- 0.
+ 5  k_final <- 0.
  6  for k = 1, ..., K do
  7      Y_hat_k <- ScoreFormer.Infer(L, f^(k-1)).
  8      G_k <- the n_oracle compounds in L with the lowest y_hat_i.
@@ -74,8 +74,10 @@ Output: R: ranked list of prioritized compounds.
 14      f^(k) <- ScoreFormer.Train(P_k, H, E).  // retrained from scratch
 15      k_final <- k.
 16  end for
-17  Y_hat <- ScoreFormer.Infer(L, f^(k_final)).
-18  s_m <- y_m if m in D_all, otherwise y_hat_m, for each m in L.
-19  R <- L sorted by ascending s_m.
-20  return R.
+17  Y_hat_final <- ScoreFormer.Infer(L, f^(k_final)).
+18  G_final <- the n_oracle compounds in L with the lowest predicted scores in Y_hat_final.
+19  D_final <- O_T(G_final).  // final docking round
+20  D_all <- D_all UNION D_final.
+21  R <- D_all sorted by ascending docking score y_i.
+22  return R.
 ```
