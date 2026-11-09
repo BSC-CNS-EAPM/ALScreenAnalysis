@@ -49,35 +49,33 @@ Output: Y_hat = {(m_i, y_hat_i)}: predicted docking scores keyed by molecule ide
 ## ALScreen (active-learning virtual screening)
 
 ```text
-Input:  L: compound library;
+Input:  L: molecular library;
         O_T: docking oracle for target T;
         n_sub: initial subset size;
-        n_oracle: compounds docked per cycle;
-        n_pool: compounds added to the training pool per cycle;
+        n_oracle: molecules docked per cycle;
+        n_pool: molecules added to the training pool per cycle;
         K: maximum number of cycles;
         H, E: training settings;
-Output: R: ranked list of prioritized compounds.
+Output: R: ranked list of prioritized molecules.
 
  1  S <- RepresentativeSubset(L, n_sub).
  2  D_0 <- O_T(S).  // initial training pool {(m_i, y_i)}
- 3  P_0 <- D_0;  D_all <- D_0.  // training pool; all docked compounds
+ 3  P_0 <- D_0;  D_all <- D_0.  // training pool; all docked molecules
  4  f^(0) <- ScoreFormer.Train(P_0, H, E).  // initial training
- 5  k_final <- 0.
  6  for k = 1, ..., K do
  7      Y_hat_k <- ScoreFormer.Infer(L, f^(k-1)).
- 8      G_k <- the n_oracle compounds in L with the lowest y_hat_i.
+ 8      G_k <- the n_oracle molecules in L with the lowest predicted scores in Y_hat_k.
  9      D_k <- O_T(G_k).
 10      D_all <- D_all UNION D_k.
-11      e_m <- |y_hat_m - y_m| for each m in G_k.
-12      C_k <- the n_pool best- and n_pool worst-predicted compounds of G_k (lowest and highest e_m), with their docking labels.
+11      {e_i} <- {|y_hat_i - y_i|} for each (m_i) in D_k.
+12      C_k <- the n_pool best- and n_pool worst-predicted molecules of D_k (lowest and highest e_i), with their docking labels.
 13      P_k <- P_{k-1} UNION C_k.
 14      f^(k) <- ScoreFormer.Train(P_k, H, E).  // retrained from scratch
-15      k_final <- k.
 16  end for
-17  Y_hat_final <- ScoreFormer.Infer(L, f^(k_final)).
-18  G_final <- the n_oracle compounds in L with the lowest predicted scores in Y_hat_final.
-19  D_final <- O_T(G_final).  // final docking round
-20  D_all <- D_all UNION D_final.
+17  Y_hat_K+1 <- ScoreFormer.Infer(L, f^(K)).
+18  G_K+1 <- the n_oracle compounds in L with the lowest predicted scores in Y_hat_K+1.
+19  D_K+1 <- O_T(G_final).  // final docking round
+20  D_all <- D_all UNION D_K+1.
 21  R <- D_all sorted by ascending docking score y_i.
 22  return R.
 ```
